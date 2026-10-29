@@ -1,0 +1,35 @@
+name: Atualizar Dados do Dashboard
+
+on:
+  schedule:
+    # Roda a cada 3 dias à meia-noite (UTC)
+    - cron: '0 0 */3 * *'
+  # Permite rodar manualmente clicando num botão no GitHub
+  workflow_dispatch:
+
+jobs:
+  atualizar_dados:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar bibliotecas
+        run: pip install pandas requests
+
+      - name: Rodar o Pipeline ETL
+        run: python etl_pipeline.py
+
+      - name: Guardar os novos dados no repositório
+        run: |
+          git config --global user.name "Robô de Dados"
+          git config --global user.email "robo@radardelivery.com"
+          git add data/
+          git commit -m "🤖 Atualização automática dos dados (IBGE e OSM)" || echo "Nenhuma mudança nos dados para comitar"
+          git push
