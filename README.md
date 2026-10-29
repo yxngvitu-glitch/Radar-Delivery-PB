@@ -16,7 +16,7 @@ Este projeto foi desenhado com uma **arquitetura de dados desacoplada** para gar
 
 O fluxo de dados funciona numa estrutura de **Fábrica de Dados Automatizada (ETL)**:
 
-1. **Extract & Transform (O Robô):** Um *script* Python (`etl_pipeline.py`) consome a API do IBGE (SIDRA) para dados demográficos e a API do OpenStreetMap (Overpass) para dados espaciais.
+1. **Extract & Transform (O Robô):** Um *script* Python (`pipeline.py`) consome a API do IBGE (SIDRA) para dados demográficos e a API do OpenStreetMap (Overpass) para dados espaciais.
 2. **Automação (GitHub Actions):** A cada 3 dias, um *workflow* do GitHub Actions executa silenciosamente o pipeline ETL, extrai os dados mais recentes, realiza a limpeza e atualiza os ficheiros CSV locais no repositório.
 3. **Load & Serve (O Dashboard):** A aplicação Streamlit (`app.py`) consome os dados exclusivamente da pasta estática `data/`. Isto garante carregamento instantâneo da interface, previne falhas durante avaliações e utiliza mapas base da Esri para evitar bloqueios 403 do OpenStreetMap.
 
@@ -57,7 +57,7 @@ pip install -r requirements.txt
 
 3. (Opcional) Force a atualização dos dados executando o Pipeline ETL:
 ```bash
-python etl_pipeline.py
+python pipeline.py
 ```
 
 4. Inicie o Dashboard:
